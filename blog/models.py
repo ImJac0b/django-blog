@@ -23,6 +23,7 @@ class Post(models.Model):
     liked = models.ManyToManyField(
         settings.AUTH_USER_MODEL, blank=True, related_name='liked')
     date_posted = models.DateTimeField(default=timezone.now)
+    category = models.CharField(max_length=100, default='uncategorized')
 
     objects = PostManager()
 
@@ -54,3 +55,12 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.author
+
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("post_list")

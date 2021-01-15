@@ -1,4 +1,4 @@
-from .models import Post, Comment
+from .models import Post, Comment, Category
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -60,7 +60,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ['title', 'content']
+    fields = ['title', 'content', 'category']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -99,3 +99,8 @@ def add_comment(request, pk):
     else:
         return redirect('post_detail', pk=pk)
     return redirect('post_detail', pk=pk)
+
+class AddCategoryView(CreateView):
+    model = Category
+    fields = '__all__'
+    template_name = 'blog/add_category.html'
